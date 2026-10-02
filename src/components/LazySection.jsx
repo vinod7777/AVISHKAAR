@@ -30,22 +30,24 @@ const LazySection = ({ children, className = '', animation = 'fade-up', delay = 
     return () => observer.disconnect();
   }, []);
 
-  // Lightweight ocean entrance
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
+
+  // Lightweight ocean entrance — softened distance and faster speed on mobile
   const variants = {
     'fade-up': {
-      hidden: { opacity: 0, y: 40 },
+      hidden: { opacity: 0, y: isMobile ? 16 : 40 },
       visible: { opacity: 1, y: 0 },
     },
     'fade-left': {
-      hidden: { opacity: 0, x: -40 },
+      hidden: { opacity: 0, x: isMobile ? -16 : -40 },
       visible: { opacity: 1, x: 0 },
     },
     'fade-right': {
-      hidden: { opacity: 0, x: 40 },
+      hidden: { opacity: 0, x: isMobile ? 16 : 40 },
       visible: { opacity: 1, x: 0 },
     },
     'scale': {
-      hidden: { opacity: 0, scale: 0.95 },
+      hidden: { opacity: 0, scale: isMobile ? 0.98 : 0.95 },
       visible: { opacity: 1, scale: 1 },
     },
   };
@@ -64,8 +66,8 @@ const LazySection = ({ children, className = '', animation = 'fade-up', delay = 
           animate={isVisible || hasLoaded ? 'visible' : 'hidden'}
           variants={selectedVariant}
           transition={{
-            duration: 0.6,
-            delay: isVisible ? delay : 0,
+            duration: isMobile ? 0.35 : 0.6,
+            delay: isVisible ? (isMobile ? 0 : delay) : 0,
             ease: [0.22, 1, 0.36, 1],
           }}
         >

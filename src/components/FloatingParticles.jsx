@@ -4,13 +4,15 @@ import { useSectionVisibility } from "./LazySection";
 
 // CSS-driven floating particles - only active when current section is visible
 const FloatingParticles = ({ count = 20 }) => {
-  const { isLowEnd, ready } = useDeviceCapability();
+  const { isMobile, isLowEnd, ready } = useDeviceCapability();
   const isSectionVisible = useSectionVisibility();
 
   const particles = useMemo(() => {
-    if (!ready || !isSectionVisible) return [];
-    // Balanced sweet spot: 14 on desktop, 7 on mobile/low-end
-    const actual = isLowEnd ? Math.min(7, count) : Math.min(14, count);
+    // Completely skip particle calculation and DOM creation on mobile screens
+    if (!ready || isMobile || !isSectionVisible) return [];
+    
+    // Balanced desktop count: 12 on desktop, 4 on low-end
+    const actual = isLowEnd ? Math.min(4, count) : Math.min(12, count);
     return Array.from({ length: actual }).map((_, i) => ({
       id: i,
       left: 6 + (i * (88 / actual)) + (Math.random() * 6 - 3),
@@ -19,10 +21,10 @@ const FloatingParticles = ({ count = 20 }) => {
       delay: -(i * 1.2),
       hue: 195 + Math.random() * 20,
     }));
-  }, [count, isLowEnd, ready, isSectionVisible]);
+  }, [count, isMobile, isLowEnd, ready, isSectionVisible]);
 
-  // Completely unmount particles when section is scrolled out of view
-  if (!ready || !isSectionVisible) return null;
+  // Completely unmount particles on mobile or when section is scrolled out of view
+  if (!ready || isMobile || !isSectionVisible || particles.length === 0) return null;
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">

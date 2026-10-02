@@ -2,11 +2,12 @@ import React, { useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import DeepSeaCreatures from './DeepSeaCreatures';
 
-// CSS-based bubbles — balanced count for visual richness without lag
+// CSS-based bubbles — disabled on mobile, balanced on desktop
 const Bubbles = () => {
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
     const bubbles = useMemo(() => {
-        const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
-        const count = isMobile ? 6 : 13;
+        if (isMobile) return [];
+        const count = 10;
         return Array.from({ length: count }).map((_, i) => ({
             id: i,
             size: Math.random() * 8 + 4,
@@ -14,7 +15,9 @@ const Bubbles = () => {
             duration: Math.random() * 4 + 7.5,
             delay: -(i * 1.6),
         }));
-    }, []);
+    }, [isMobile]);
+
+    if (isMobile || bubbles.length === 0) return null;
 
     return (
         <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
@@ -36,8 +39,11 @@ const Bubbles = () => {
     );
 };
 
-// CSS-based Light Rays — lightweight blend
+// CSS-based Light Rays — disabled on mobile screens to eliminate GPU compositing overhead
 const LightRays = () => {
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
+    if (isMobile) return null;
+
     return (
         <div className="fixed top-0 left-0 w-full h-[60vh] pointer-events-none z-0 overflow-hidden opacity-20">
             <div
@@ -127,14 +133,17 @@ const GlobalOceanStyles = () => (
 );
 
 const ScrollDepthMeter = () => {
+    const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
     const { scrollYProgress } = useScroll();
 
     const depthNumber = useTransform(scrollYProgress, [0, 1], [0, 10994]);
     const depthText = useTransform(depthNumber, (val) => Math.floor(val).toLocaleString() + 'm');
     const markerHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
+    if (isMobile) return null;
+
     return (
-        <div className="fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-[50] flex flex-col items-center gap-3 pointer-events-none">
+        <div className="hidden md:flex fixed right-4 md:right-8 top-1/2 -translate-y-1/2 z-[50] flex flex-col items-center gap-3 pointer-events-none">
             <div className="h-32 md:h-48 w-1.5 md:w-2 bg-slate-800/50 backdrop-blur-sm rounded-full overflow-hidden relative border border-white/5">
                 <motion.div
                     className="absolute top-0 w-full bg-gradient-to-b from-cyan-300 to-cyan-600 rounded-full"

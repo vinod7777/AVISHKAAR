@@ -748,7 +748,7 @@ const PrizePoolDisplay = ({ type }) => {
 const ImportantDates = ({ type }) => {
   const virtualDates = [
     { event: 'Registrations Open', date: 'Sep 16, 2026' },
-    { event: 'Registrations Close', date: 'Nov 21, 2026' },
+    { event: 'Registrations Close', date: 'Oct 15, 2026' },
     { event: 'Problem Statements Release', date: 'Nov 27, 2026 - 10:00 AM' },
     { event: 'Hackathon Begins', date: 'Nov 27, 2026 - 11:00 AM' },
     { event: 'Hackathon Ends', date: 'Nov 27, 2026 - 11:00 AM' },
@@ -758,10 +758,10 @@ const ImportantDates = ({ type }) => {
   ];
   const physicalDates = [
     { event: 'Registrations Open', date: 'Sep 16, 2026' },
-    { event: 'Abstract & Video Submission', date: 'Oct 17, 2026' },
-    { event: 'Shortlisting Results', date: 'Oct 26, 2026' },
-    { event: 'Mentorship Phase Begins', date: 'Nov 15, 2026' },
-    { event: 'Mentorship Phase Ends', date: 'Nov 28, 2026' },
+    { event: 'Abstract & Video Submission', date: 'Sep 16 - Nov 07, 2026' },
+    { event: 'Shortlisting Results', date: 'Nov 15 - Nov 19, 2026' },
+    { event: 'Mentorship Phase Begins', date: 'Nov 20, 2026' },
+    { event: 'Mentorship Phase Ends', date: 'Dec 04, 2026' },
     { event: 'Reporting at Campus', date: 'Dec 23, 2026 (Evening)' },
     { event: 'Hackathon Begins', date: 'Dec 24, 2026 - 9:00 AM' },
     { event: 'Hackathon Ends', date: 'Dec 26, 2026 - 9:00 AM' },

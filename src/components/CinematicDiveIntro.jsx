@@ -123,10 +123,12 @@ const CinematicDiveIntro = ({ onDone }) => {
             )}
           </AnimatePresence>
 
-          {/* Bubble streams while diving */}
-          {phase >= 1 &&
-            Array.from({ length: 24 }).map((_, i) => {
-              const left = (i * 4.2) % 100;
+          {/* Bubble streams while diving — scaled down for mobile screens */}
+          {phase >= 1 && (() => {
+            const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
+            const bubbleCount = isMobile ? 6 : 24;
+            return Array.from({ length: bubbleCount }).map((_, i) => {
+              const left = (i * (100 / bubbleCount)) % 100;
               const size = 6 + ((i * 7) % 18);
               const dur = 1.4 + (i % 5) * 0.25;
               const delay = (i % 8) * 0.08;
@@ -147,7 +149,8 @@ const CinematicDiveIntro = ({ onDone }) => {
                   transition={{ duration: dur, delay, ease: "easeIn" }}
                 />
               );
-            })}
+            });
+          })()}
 
           {/* Caustic light streaks while underwater */}
           {phase >= 2 && (

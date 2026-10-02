@@ -31,8 +31,12 @@ const faqData = {
       answer: 'Yes, adequate security measures will be in place to protect your projects and equipment during the Physical Hackathon. Secure storage facilities will be provided.',
     },
     {
-      question: 'Food & Accommodation provision?',
-      answer: 'Food will be provided during the hackathon duration. Accommodation arrangements can be made upon request with prior notice to the organizing committee.',
+      question: 'Are food and accommodation provided during the hackathon?',
+      answer: 'Yes, food and accommodation arrangements can be made upon request with prior notice to the organizing committee. Please note that applicable charges will apply.',
+    },
+    {
+      question: 'Are food and accommodation free?',
+      answer: 'No, food and accommodation are not free. Participants who require food and accommodation will be charged a nominal fee.',
     },
     {
       question: 'Can a team consist of students from different domains?',

@@ -565,6 +565,7 @@ const useUnderwaterAmbient = () => {
             nodesRef.current = nodes;
         }
         catch {
+            // AudioContext not supported or autoplay blocked
         }
     }, []);
     const stop = useCallback(() => {

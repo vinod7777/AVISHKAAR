@@ -35,7 +35,7 @@ const RegisterPage = () => {
         <div className="bg-card border border-primary/20 rounded-2xl p-8 shadow-[0_0_30px_hsl(var(--primary)/0.1)]">
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <div className="w-8 h-8 text-primary" />
+              <Droplets className="w-8 h-8 text-primary" />
             </div>
             <h1 className="text-3xl font-display font-bold text-gradient-water">Join AVISHKAAR</h1>
             <p className="text-muted-foreground mt-2">Create your account</p>

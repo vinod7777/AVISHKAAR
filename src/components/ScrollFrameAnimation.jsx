@@ -150,9 +150,9 @@ const ScrollFrameAnimation = ({ children }) => {
         }}
       />
 
-      {/* Bubbles overlay - only active and animated when Hero is on screen */}
+      {/* Bubbles overlay - only active and animated when Hero is on desktop screen */}
       {isHeroInView && (
-        <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+        <div className="hidden md:block absolute inset-0 z-20 pointer-events-none overflow-hidden">
         <style>{`
           @keyframes heroBubbleRise {
             0% { transform: translate3d(0, 0, 0); opacity: 0; }

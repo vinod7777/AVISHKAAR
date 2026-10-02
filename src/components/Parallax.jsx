@@ -38,7 +38,9 @@ export const ParallaxSection = ({
     ["inset(0% 50% 0% 50% round 32px)", "inset(0% 0% 0% 0% round 0px)"]
   );
 
-  if (reduce) {
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
+
+  if (reduce || isMobile) {
     return (
       <div ref={ref} className={className}>
         {children}

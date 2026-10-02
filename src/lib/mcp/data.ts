@@ -63,7 +63,12 @@ export const FAQS = [
   {
     question: "Are food and accommodation provided?",
     answer:
-      "Food is provided during the hackathon. Accommodation can be arranged on request with prior notice to the organizing committee.",
+      "Yes, food and accommodation arrangements can be made upon request with prior notice to the organizing committee. Applicable charges will apply.",
+  },
+  {
+    question: "Are food and accommodation free?",
+    answer:
+      "No, food and accommodation are not free. Participants who require food and accommodation will be charged a nominal fee.",
   },
   {
     question: "Can a team consist of students from different domains?",

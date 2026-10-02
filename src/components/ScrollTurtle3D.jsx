@@ -235,11 +235,15 @@ const TurtleCanvas = ({ scrollProgress, mousePos }) => (
 );
 
 const ScrollTurtle3D = () => {
+  const { isMobile, isLowEnd, ready } = useDeviceCapability();
   const scrollProgress = useRef(0);
   const mousePos = useRef({ x: 0, y: 0 });
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    // Disable heavy 3D canvas and event listeners completely on mobile / low-end
+    if (!ready || isMobile || isLowEnd) return;
+
     const timer = setTimeout(() => setVisible(true), 800);
 
     let ticking = false;
@@ -276,9 +280,9 @@ const ScrollTurtle3D = () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, []);
+  }, [ready, isMobile, isLowEnd]);
 
-  if (!visible) return null;
+  if (!ready || isMobile || isLowEnd || !visible) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 5 }}>

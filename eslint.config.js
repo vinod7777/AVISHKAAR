@@ -4,12 +4,23 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 
 export default [
-  { ignores: ["dist"] },
+  { 
+    ignores: [
+      "dist/**", 
+      "public/**", 
+      "avishkaar-launch/**", 
+      "poster-launch/**", 
+      "node_modules/**"
+    ] 
+  },
   {
     files: ["**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
       parserOptions: {
         ecmaVersion: 'latest',
         ecmaFeatures: { jsx: true },
@@ -24,7 +35,14 @@ export default [
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-      "no-unused-vars": "warn",
+      "no-unused-vars": [
+        "warn",
+        {
+          varsIgnorePattern: "^[A-Z_]|motion",
+          argsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
     },
   },
 ];

@@ -30,10 +30,11 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         container.appendChild(renderer.domElement);
 
         let particles;
-        // [CHANGE HERE]: Total text particles (Density of the words)
-        const particleCount = 25000; // Reduced for massive CPU optimization
+        const isMobile = window.innerWidth < 768;
+        // 5,000 particles on mobile (80% lower overhead), 20,000 on desktop
+        const particleCount = isMobile ? 5000 : 20000;
         let positions, colors, targets, velocities;
-        // [CHANGE HERE]: Base text color glow
+        // Base text color glow
         const colorBase = new THREE.Color(0x22d3ee); // Cyan to match the theme perfectly
         const colorActive = new THREE.Color(0xffffff); // Bright white for interaction
         const clock = new THREE.Clock();
@@ -51,6 +52,7 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         observer.observe(container);
 
         const onMouseMove = (event) => {
+            if (isMobile) return; // Skip raycasting overhead on touch devices
             const rect = container.getBoundingClientRect();
             mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
             mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -60,8 +62,10 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         };
         const onMouseOut = () => { isMouseActive = false; };
 
-        window.addEventListener('mousemove', onMouseMove);
-        container.addEventListener('mouseleave', onMouseOut);
+        if (!isMobile) {
+            window.addEventListener('mousemove', onMouseMove);
+            container.addEventListener('mouseleave', onMouseOut);
+        }
 
         const texCanvas = document.createElement('canvas');
         texCanvas.width = 16;
@@ -95,9 +99,9 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-        // [CHANGE HERE]: The size of the text particles
+        // Slightly larger particle size on mobile to maintain bold legibility with fewer points
         const material = new THREE.PointsMaterial({
-            size: 1.8, // Increased size to compensate for lower particle count
+            size: isMobile ? 2.6 : 1.8,
             vertexColors: true,
             map: particleTexture,
             transparent: true,
@@ -159,9 +163,10 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
 
             const imageData = ctx2d.getImageData(0, 0, canvas2d.width, canvas2d.height).data;
             const validPixels = [];
+            const step = isMobile ? 4 : 2;
 
-            for (let y = 0; y < canvas2d.height; y += 2) {
-                for (let x = 0; x < canvas2d.width; x += 2) {
+            for (let y = 0; y < canvas2d.height; y += step) {
+                for (let x = 0; x < canvas2d.width; x += step) {
                     const idx = (y * canvas2d.width + x) * 4;
                     if (imageData[idx + 3] > 128) {
                         validPixels.push({
@@ -272,8 +277,11 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         window.addEventListener('resize', handleResize);
 
         return () => {
-            window.removeEventListener('mousemove', onMouseMove);
-            container.removeEventListener('mouseleave', onMouseOut);
+            if (!isMobile) {
+                window.removeEventListener('mousemove', onMouseMove);
+                container.removeEventListener('mouseleave', onMouseOut);
+            }
+            window.removeEventListener('resize', handleResize);
             cancelAnimationFrame(animationFrameId);
             observer.disconnect();
             
