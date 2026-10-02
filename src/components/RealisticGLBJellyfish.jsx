@@ -146,6 +146,8 @@ const RealisticGLBJellyfish = () => {
   const [isHeroSection, setIsHeroSection] = React.useState(true);
 
   React.useEffect(() => {
+    if (!ready || isLowEnd || isMobile) return;
+
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
@@ -160,9 +162,9 @@ const RealisticGLBJellyfish = () => {
     onScroll();
 
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [ready, isLowEnd, isMobile]);
 
-  if (!ready || isLowEnd) return null;
+  if (!ready || isLowEnd || isMobile) return null;
 
   return (
     <div className="fixed inset-0 z-[1] pointer-events-none">

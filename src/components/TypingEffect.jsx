@@ -62,7 +62,7 @@ const TypingEffect = () => {
                 </defs>
             </svg>
 
-            <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+            <div className="absolute inset-0 hidden md:flex items-center justify-center z-10 pointer-events-none">
                 <div className="absolute inset-0 flex justify-center mt-[-10px] sm:mt-0">
                     {[...Array(5)].map((_, i) => (
                         <motion.div

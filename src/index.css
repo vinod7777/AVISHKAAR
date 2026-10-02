@@ -700,3 +700,43 @@
   100% { stroke-dashoffset: 0; }
 }
 
+/* ═══════════════════════════════════════════════
+   Mobile GPU & Scroll Optimization (< 768px)
+   Disables continuous compositor loops & caps blurs
+   ═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Pause heavy continuous ambient animations on mobile */
+  .animate-wave-flow,
+  .animate-underwater-sway,
+  .animate-deep-shimmer,
+  .animate-water-shimmer,
+  .animate-droplet-fall,
+  .animate-bioluminescent {
+    animation: none !important;
+  }
+
+  /* Cap expensive backdrop-filter on mobile for buttery smooth scrolling */
+  .glass-card,
+  .bg-card,
+  .btn-ocean {
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+
+  /* Simplify multi-layer box shadows on mobile */
+  .glow-water,
+  .glow-ocean,
+  .glow-bioluminescent,
+  .glow-bioluminescent-purple,
+  .glow-bioluminescent-emerald {
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.25) !important;
+  }
+
+  /* Disable continuous conic gradient neon spinning on mobile touch */
+  .neon-border::before {
+    animation: none !important;
+    display: none !important;
+  }
+}
+
+

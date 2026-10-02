@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 
 /**
@@ -17,6 +17,18 @@ export const ParallaxSection = ({
 }) => {
   const ref = useRef(null);
   const reduce = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(() => 
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(max-width: 768px)");
+    const handler = (e) => setIsMobile(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -38,7 +50,7 @@ export const ParallaxSection = ({
     ["inset(0% 50% 0% 50% round 32px)", "inset(0% 0% 0% 0% round 0px)"]
   );
 
-  if (reduce) {
+  if (reduce || isMobile) {
     return (
       <div ref={ref} className={className}>
         {children}
@@ -112,6 +124,18 @@ const useTransformToFilter = (mv) => useTransform(mv, (v) => `blur(${v})`);
 export const ParallaxLayer = ({ children, speed = 0.4, className = "", style = {} }) => {
   const ref = useRef(null);
   const reduce = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(() => 
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mql = window.matchMedia("(max-width: 768px)");
+    const handler = (e) => setIsMobile(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -122,7 +146,7 @@ export const ParallaxLayer = ({ children, speed = 0.4, className = "", style = {
     <motion.div
       ref={ref}
       className={className}
-      style={{ ...style, y: reduce ? 0 : y, willChange: "transform" }}
+      style={{ ...style, y: (reduce || isMobile) ? 0 : y, willChange: isMobile ? "auto" : "transform" }}
     >
       {children}
     </motion.div>

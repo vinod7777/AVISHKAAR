@@ -4,13 +4,14 @@ import { useSectionVisibility } from "./LazySection";
 
 // CSS-driven floating particles - only active when current section is visible
 const FloatingParticles = ({ count = 20 }) => {
-  const { isLowEnd, ready } = useDeviceCapability();
+  const { isLowEnd, isMobile, ready } = useDeviceCapability();
   const isSectionVisible = useSectionVisibility();
 
   const particles = useMemo(() => {
     if (!ready || !isSectionVisible) return [];
-    // Balanced sweet spot: 14 on desktop, 7 on mobile/low-end
-    const actual = isLowEnd ? Math.min(7, count) : Math.min(14, count);
+    const isMobileDevice = isMobile || (typeof window !== 'undefined' && window.innerWidth < 768);
+    // Subtle ambient touch on mobile (max 2), balanced on low-end (6), full on desktop (14)
+    const actual = isMobileDevice ? Math.min(2, count) : isLowEnd ? Math.min(6, count) : Math.min(14, count);
     return Array.from({ length: actual }).map((_, i) => ({
       id: i,
       left: 6 + (i * (88 / actual)) + (Math.random() * 6 - 3),
@@ -19,7 +20,7 @@ const FloatingParticles = ({ count = 20 }) => {
       delay: -(i * 1.2),
       hue: 195 + Math.random() * 20,
     }));
-  }, [count, isLowEnd, ready, isSectionVisible]);
+  }, [count, isLowEnd, isMobile, ready, isSectionVisible]);
 
   // Completely unmount particles when section is scrolled out of view
   if (!ready || !isSectionVisible) return null;

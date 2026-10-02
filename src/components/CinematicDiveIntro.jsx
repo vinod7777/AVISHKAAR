@@ -125,8 +125,8 @@ const CinematicDiveIntro = ({ onDone }) => {
 
           {/* Bubble streams while diving */}
           {phase >= 1 &&
-            Array.from({ length: 24 }).map((_, i) => {
-              const left = (i * 4.2) % 100;
+            Array.from({ length: typeof window !== 'undefined' && window.innerWidth < 768 ? 8 : 24 }).map((_, i) => {
+              const left = (i * 12) % 100;
               const size = 6 + ((i * 7) % 18);
               const dur = 1.4 + (i % 5) * 0.25;
               const delay = (i % 8) * 0.08;

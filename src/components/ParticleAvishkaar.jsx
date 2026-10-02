@@ -30,8 +30,9 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         container.appendChild(renderer.domElement);
 
         let particles;
-        // [CHANGE HERE]: Total text particles (Density of the words)
-        const particleCount = 25000; // Reduced for massive CPU optimization
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+        // [OPTIMIZATION]: 4,500 particles on mobile (82% reduction) for ultra-fast 60fps, 25,000 on desktop
+        const particleCount = isMobile ? 4500 : 25000;
         let positions, colors, targets, velocities;
         // [CHANGE HERE]: Base text color glow
         const colorBase = new THREE.Color(0x22d3ee); // Cyan to match the theme perfectly
@@ -60,8 +61,10 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         };
         const onMouseOut = () => { isMouseActive = false; };
 
-        window.addEventListener('mousemove', onMouseMove);
-        container.addEventListener('mouseleave', onMouseOut);
+        if (!isMobile) {
+            window.addEventListener('mousemove', onMouseMove);
+            container.addEventListener('mouseleave', onMouseOut);
+        }
 
         const texCanvas = document.createElement('canvas');
         texCanvas.width = 16;
@@ -95,9 +98,9 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-        // [CHANGE HERE]: The size of the text particles
+        // [CHANGE HERE]: The size of the text particles (slightly larger on mobile for solid crisp words)
         const material = new THREE.PointsMaterial({
-            size: 1.8, // Increased size to compensate for lower particle count
+            size: isMobile ? 2.5 : 1.8,
             vertexColors: true,
             map: particleTexture,
             transparent: true,
@@ -213,11 +216,11 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
                     tz += Math.cos(tx * 0.1 + time * 1.5) * 1.2; // Increased from 0.5 to 1.5
 
                     let distToMouse = 999;
-                    if (isMouseActive) {
+                    if (isMouseActive && !isMobile) {
                         const dx = px - mouse3D.x;
                         const dy = py - mouse3D.y;
                         const dz = pz - mouse3D.z;
-                        distToMouse = Math.sqrt(dx * dx + dy * dy + dz * dz);
+                        const distToMouse = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
                         // [CHANGE HERE]: Text Mouse Interaction - Effect Radius
                         const repelRadius = 20; // increased radius
@@ -228,6 +231,13 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
                             ty += (dy / distToMouse) * force * 45;
                             tz += (dz / distToMouse) * force * 45;
                         }
+
+                        let currentColor = new THREE.Color(colAttr.array[i3], colAttr.array[i3 + 1], colAttr.array[i3 + 2]);
+                        let targetColor = distToMouse < 20 ? colorActive : colorBase;
+                        currentColor.lerp(targetColor, 0.1);
+                        colAttr.array[i3] = currentColor.r;
+                        colAttr.array[i3 + 1] = currentColor.g;
+                        colAttr.array[i3 + 2] = currentColor.b;
                     }
 
                     velocities[i3] += (tx - px) * 0.04;
@@ -241,18 +251,10 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
                     posAttr.array[i3] += velocities[i3];
                     posAttr.array[i3 + 1] += velocities[i3 + 1];
                     posAttr.array[i3 + 2] += velocities[i3 + 2];
-
-                    let currentColor = new THREE.Color(colAttr.array[i3], colAttr.array[i3 + 1], colAttr.array[i3 + 2]);
-                    let targetColor = distToMouse < 20 ? colorActive : colorBase;
-
-                    currentColor.lerp(targetColor, 0.1);
-                    colAttr.array[i3] = currentColor.r;
-                    colAttr.array[i3 + 1] = currentColor.g;
-                    colAttr.array[i3 + 2] = currentColor.b;
                 }
 
                 posAttr.needsUpdate = true;
-                colAttr.needsUpdate = true;
+                if (!isMobile) colAttr.needsUpdate = true;
             }
 
             renderer.render(scene, camera);
@@ -272,8 +274,10 @@ const ParticleAvishkaar = ({ text = "AVISHKAAR" }) => {
         window.addEventListener('resize', handleResize);
 
         return () => {
-            window.removeEventListener('mousemove', onMouseMove);
-            container.removeEventListener('mouseleave', onMouseOut);
+            if (!isMobile) {
+                window.removeEventListener('mousemove', onMouseMove);
+                container.removeEventListener('mouseleave', onMouseOut);
+            }
             cancelAnimationFrame(animationFrameId);
             observer.disconnect();
             

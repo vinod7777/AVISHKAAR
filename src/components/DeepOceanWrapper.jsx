@@ -6,7 +6,7 @@ import DeepSeaCreatures from './DeepSeaCreatures';
 const Bubbles = () => {
     const bubbles = useMemo(() => {
         const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
-        const count = isMobile ? 6 : 13;
+        const count = isMobile ? 3 : 13;
         return Array.from({ length: count }).map((_, i) => ({
             id: i,
             size: Math.random() * 8 + 4,
@@ -36,10 +36,10 @@ const Bubbles = () => {
     );
 };
 
-// CSS-based Light Rays — lightweight blend
+// CSS-based Light Rays — lightweight blend on desktop, hidden on mobile for smooth GPU scrolling
 const LightRays = () => {
     return (
-        <div className="fixed top-0 left-0 w-full h-[60vh] pointer-events-none z-0 overflow-hidden opacity-20">
+        <div className="fixed top-0 left-0 w-full h-[60vh] pointer-events-none z-0 overflow-hidden opacity-20 hidden md:block">
             <div
                 className="absolute top-[-20%] left-[10%] w-[150%] h-[150%] origin-top-left"
                 style={{
