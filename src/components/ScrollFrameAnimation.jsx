@@ -161,9 +161,9 @@ const ScrollFrameAnimation = ({ children }) => {
             100% { transform: translate3d(0, -110vh, 0); opacity: 0; }
           }
         `}</style>
-        {[...Array(8)].map((_, i) => {
+        {[...Array(typeof window !== 'undefined' && window.innerWidth < 768 ? 2 : 8)].map((_, i) => {
           const size = 4 + (i % 3) * 3.5;
-          const left = 6 + i * 11.5;
+          const left = 15 + i * 50;
           const dur = 6.5 + (i % 4) * 1.4;
           const delay = i * 1.1;
           return (

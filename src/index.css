@@ -700,37 +700,3 @@
   100% { stroke-dashoffset: 0; }
 }
 
-/* ═══════════════════════════════════════════════
-   MOBILE PERFORMANCE OPTIMIZATION LAYER
-   ═══════════════════════════════════════════════ */
-@media (max-width: 768px) {
-  /* Soften expensive real-time blur filters on mobile GPUs */
-  .glass-card,
-  .bg-card {
-    backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(4px) !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45) !important;
-  }
-
-  /* Simplify intense multi-layered glow shadows on mobile */
-  .glow-water,
-  .glow-bioluminescent,
-  .glow-bioluminescent-purple,
-  .glow-bioluminescent-emerald {
-    box-shadow: 0 0 10px rgba(34, 211, 238, 0.25) !important;
-  }
-
-  /* Optimize button styles on touch screens */
-  .btn-ocean {
-    box-shadow: 0 0 10px rgba(34, 211, 238, 0.2) !important;
-    backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(4px) !important;
-  }
-
-  /* Ensure smooth, touch-friendly padding */
-  .container {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-  }
-}
-
