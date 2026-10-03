@@ -748,12 +748,12 @@ const PrizePoolDisplay = ({ type }) => {
 const ImportantDates = ({ type }) => {
   const virtualDates = [
     { event: 'Registrations Open', date: 'Sep 16, 2026' },
-    { event: 'Registrations Close', date: 'Oct 15, 2026' },
+    { event: 'Registrations Close', date: 'Oct 25, 2026' },
     { event: 'Problem Statements Release', date: 'Nov 27, 2026 - 10:00 AM' },
     { event: 'Hackathon Begins', date: 'Nov 27, 2026 - 11:00 AM' },
-    { event: 'Hackathon Ends', date: 'Nov 27, 2026 - 11:00 AM' },
-    { event: 'Project Submission Deadline', date: 'Nov 27, 2026 - 09:00 AM to 11:00 AM' },
-    { event: 'Online Pitching', date: 'Nov 27, 2026 - 10:00 AM Onwards' },
+    { event: 'Hackathon Ends', date: 'Nov 28, 2026 - 11:00 AM' },
+    { event: 'Project Submission Deadline', date: 'Nov 28, 2026 - 09:00 AM to 11:00 AM' },
+    { event: 'Online Pitching', date: 'Nov 28, 2026 - 10:00 AM Onwards' },
     { event: 'Results Announcement', date: 'Nov 28, 2026' },
   ];
   const physicalDates = [
